@@ -1,0 +1,179 @@
+{
+  "_comment": "Maps a restaurant's country to the platforms worth checking. 'confidence: needs_verification' flags entries found via research but not hands-on confirmed — verify before relying on them in production.",
+  "_universal_platforms": ["google_maps", "tripadvisor", "facebook", "instagram", "google_news"],
+  "countries": {
+    "GE": {
+      "name": "Georgia",
+      "region": "caucasus",
+      "extra_maps_reviews": [
+        { "platform": "yandex_maps", "confidence": "confirmed" },
+        { "platform": "2gis", "confidence": "needs_verification" }
+      ],
+      "delivery": [
+        { "platform": "wolt", "confidence": "confirmed" },
+        { "platform": "glovo", "confidence": "confirmed" },
+        { "platform": "bolt_food", "confidence": "confirmed" }
+      ]
+    },
+    "AM": {
+      "name": "Armenia",
+      "region": "caucasus",
+      "extra_maps_reviews": [
+        { "platform": "yandex_maps", "confidence": "needs_verification" },
+        { "platform": "2gis", "confidence": "needs_verification" }
+      ],
+      "delivery": [
+        { "platform": "glovo", "confidence": "confirmed" },
+        { "platform": "wolt", "confidence": "confirmed" },
+        { "platform": "bolt_food", "confidence": "needs_verification" }
+      ]
+    },
+    "AZ": {
+      "name": "Azerbaijan",
+      "region": "caucasus",
+      "extra_maps_reviews": [
+        { "platform": "yandex_maps", "confidence": "confirmed" },
+        { "platform": "2gis", "confidence": "confirmed" }
+      ],
+      "delivery": [
+        { "platform": "wolt", "confidence": "confirmed" },
+        { "platform": "glovo", "confidence": "confirmed" },
+        { "platform": "bolt_food", "confidence": "confirmed" }
+      ]
+    },
+
+    "FR": {
+      "name": "France",
+      "region": "western_europe",
+      "extra_maps_reviews": [
+        { "platform": "thefork", "confidence": "confirmed" }
+      ],
+      "delivery": [
+        { "platform": "deliveroo", "confidence": "confirmed" },
+        { "platform": "uber_eats", "confidence": "confirmed" }
+      ]
+    },
+    "DE": {
+      "name": "Germany",
+      "region": "western_europe",
+      "extra_maps_reviews": [
+        { "platform": "yelp", "confidence": "confirmed" },
+        { "platform": "thefork", "confidence": "needs_verification" }
+      ],
+      "delivery": [
+        { "platform": "wolt", "confidence": "confirmed" },
+        { "platform": "uber_eats", "confidence": "confirmed" }
+      ]
+    },
+    "GB": {
+      "name": "United Kingdom",
+      "region": "western_europe",
+      "extra_maps_reviews": [
+        { "platform": "yelp", "confidence": "confirmed" }
+      ],
+      "delivery": [
+        { "platform": "deliveroo", "confidence": "confirmed" },
+        { "platform": "uber_eats", "confidence": "confirmed" }
+      ]
+    },
+    "NL": {
+      "name": "Netherlands",
+      "region": "western_europe",
+      "extra_maps_reviews": [
+        { "platform": "thefork", "confidence": "needs_verification" }
+      ],
+      "delivery": [
+        { "platform": "uber_eats", "confidence": "confirmed" }
+      ]
+    },
+    "BE": {
+      "name": "Belgium",
+      "region": "western_europe",
+      "extra_maps_reviews": [
+        { "platform": "thefork", "confidence": "confirmed" }
+      ],
+      "delivery": [
+        { "platform": "uber_eats", "confidence": "needs_verification" }
+      ]
+    },
+    "AT": {
+      "name": "Austria",
+      "region": "western_europe",
+      "extra_maps_reviews": [],
+      "delivery": [
+        { "platform": "wolt", "confidence": "confirmed" },
+        { "platform": "uber_eats", "confidence": "needs_verification" }
+      ]
+    },
+
+    "PL": {
+      "name": "Poland",
+      "region": "eastern_europe",
+      "extra_maps_reviews": [
+        { "platform": "yelp", "confidence": "confirmed" }
+      ],
+      "delivery": [
+        { "platform": "glovo", "confidence": "confirmed" },
+        { "platform": "wolt", "confidence": "confirmed" },
+        { "platform": "uber_eats", "confidence": "confirmed" }
+      ]
+    },
+    "CZ": {
+      "name": "Czech Republic",
+      "region": "eastern_europe",
+      "extra_maps_reviews": [
+        { "platform": "yelp", "confidence": "confirmed" }
+      ],
+      "delivery": [
+        { "platform": "wolt", "confidence": "confirmed" },
+        { "platform": "glovo", "confidence": "confirmed" },
+        { "platform": "uber_eats", "confidence": "needs_verification" }
+      ]
+    },
+    "RO": {
+      "name": "Romania",
+      "region": "eastern_europe",
+      "extra_maps_reviews": [],
+      "delivery": [
+        { "platform": "glovo", "confidence": "confirmed" },
+        { "platform": "uber_eats", "confidence": "confirmed" }
+      ]
+    },
+    "HU": {
+      "name": "Hungary",
+      "region": "eastern_europe",
+      "extra_maps_reviews": [],
+      "delivery": [
+        { "platform": "wolt", "confidence": "confirmed" },
+        { "platform": "glovo", "confidence": "confirmed" }
+      ]
+    },
+    "LT": {
+      "name": "Lithuania",
+      "region": "eastern_europe",
+      "extra_maps_reviews": [],
+      "delivery": [
+        { "platform": "bolt_food", "confidence": "confirmed" },
+        { "platform": "wolt", "confidence": "confirmed" }
+      ]
+    },
+    "LV": {
+      "name": "Latvia",
+      "region": "eastern_europe",
+      "extra_maps_reviews": [],
+      "delivery": [
+        { "platform": "bolt_food", "confidence": "confirmed" },
+        { "platform": "wolt", "confidence": "confirmed" }
+      ]
+    },
+    "EE": {
+      "name": "Estonia",
+      "region": "eastern_europe",
+      "extra_maps_reviews": [],
+      "delivery": [
+        { "platform": "bolt_food", "confidence": "confirmed" },
+        { "platform": "wolt", "confidence": "confirmed" }
+      ]
+    }
+  }
+}

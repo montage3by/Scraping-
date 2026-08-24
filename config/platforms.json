@@ -1,0 +1,126 @@
+{
+  "_comment": "Registry of platforms the collector can pull restaurant mentions/reviews from. Countries reference these by id in countries.json.",
+  "platforms": [
+    {
+      "id": "google_maps",
+      "name": "Google Maps",
+      "category": "maps_reviews",
+      "collection_method": "browser",
+      "official_api_available": true,
+      "api_notes": "Google Places API (Text/Nearby Search + reviews) — paid per request, $200/mo free credit. Preferred over browser scraping where budget allows.",
+      "risk": "low"
+    },
+    {
+      "id": "tripadvisor",
+      "name": "Tripadvisor",
+      "category": "maps_reviews",
+      "collection_method": "browser",
+      "official_api_available": true,
+      "api_notes": "Content API exists but requires approval process — not instant.",
+      "risk": "medium"
+    },
+    {
+      "id": "facebook",
+      "name": "Facebook (Page reviews/mentions)",
+      "category": "social",
+      "collection_method": "browser",
+      "official_api_available": false,
+      "api_notes": "Graph API requires business verification + page admin access; public scraping is against ToS and heavily defended.",
+      "risk": "high"
+    },
+    {
+      "id": "instagram",
+      "name": "Instagram (hashtag/location mentions)",
+      "category": "social",
+      "collection_method": "browser",
+      "official_api_available": false,
+      "api_notes": "No public hashtag search API without a verified Business account (Graph API). Highest anti-bot risk of all sources.",
+      "risk": "high"
+    },
+    {
+      "id": "yandex_maps",
+      "name": "Yandex Maps",
+      "category": "maps_reviews",
+      "collection_method": "browser",
+      "official_api_available": true,
+      "api_notes": "Geosearch API for org search (free up to 500 req/day) but standard license forbids storing raw results long-term — verify terms before caching history.",
+      "risk": "medium"
+    },
+    {
+      "id": "2gis",
+      "name": "2GIS",
+      "category": "maps_reviews",
+      "collection_method": "browser",
+      "official_api_available": true,
+      "api_notes": "Catalog API exists (paid, calculator-based pricing) — confirmed coverage in Azerbaijan; Georgia/Armenia coverage unverified.",
+      "risk": "medium"
+    },
+    {
+      "id": "thefork",
+      "name": "TheFork (La Fourchette)",
+      "category": "maps_reviews",
+      "collection_method": "browser",
+      "official_api_available": false,
+      "api_notes": "No public consumer-facing API found; restaurant partner API exists but requires partnership.",
+      "risk": "medium"
+    },
+    {
+      "id": "yelp",
+      "name": "Yelp",
+      "category": "maps_reviews",
+      "collection_method": "browser",
+      "official_api_available": true,
+      "api_notes": "Yelp Fusion API available (free tier with rate limits) — check current ToS on review text redistribution.",
+      "risk": "low"
+    },
+    {
+      "id": "wolt",
+      "name": "Wolt",
+      "category": "delivery",
+      "collection_method": "browser",
+      "official_api_available": false,
+      "risk": "medium"
+    },
+    {
+      "id": "glovo",
+      "name": "Glovo",
+      "category": "delivery",
+      "collection_method": "browser",
+      "official_api_available": false,
+      "risk": "medium"
+    },
+    {
+      "id": "uber_eats",
+      "name": "Uber Eats",
+      "category": "delivery",
+      "collection_method": "browser",
+      "official_api_available": false,
+      "risk": "medium"
+    },
+    {
+      "id": "bolt_food",
+      "name": "Bolt Food",
+      "category": "delivery",
+      "collection_method": "browser",
+      "official_api_available": false,
+      "risk": "medium"
+    },
+    {
+      "id": "deliveroo",
+      "name": "Deliveroo",
+      "category": "delivery",
+      "collection_method": "browser",
+      "official_api_available": false,
+      "risk": "medium"
+    },
+    {
+      "id": "google_news",
+      "name": "Google News (RSS)",
+      "category": "news",
+      "collection_method": "api",
+      "official_api_available": true,
+      "api_notes": "Free RSS feed, no key required.",
+      "risk": "low"
+    }
+  ]
+}
