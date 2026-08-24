@@ -2,3 +2,5 @@ report/_demo_output/
 report/node_modules/
 __pycache__/
 *.pyc
+backend/queue.db
+backend/__pycache__/

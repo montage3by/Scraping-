@@ -1,1 +1,4 @@
 playwright>=1.47
+fastapi>=0.115
+uvicorn[standard]>=0.30
+email-validator>=2.2
