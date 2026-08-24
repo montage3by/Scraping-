@@ -42,6 +42,57 @@
       ]
     },
 
+    "KZ": {
+      "name": "Kazakhstan",
+      "region": "central_asia",
+      "extra_maps_reviews": [
+        { "platform": "2gis", "confidence": "confirmed" },
+        { "platform": "yandex_maps", "confidence": "confirmed" }
+      ],
+      "delivery": [
+        { "platform": "yandex_eda", "confidence": "confirmed" },
+        { "platform": "chocofood", "confidence": "confirmed" },
+        { "platform": "wolt", "confidence": "confirmed" },
+        { "platform": "glovo", "confidence": "confirmed" }
+      ]
+    },
+    "UZ": {
+      "name": "Uzbekistan",
+      "region": "central_asia",
+      "extra_maps_reviews": [
+        { "platform": "2gis", "confidence": "needs_verification" },
+        { "platform": "yandex_maps", "confidence": "needs_verification" }
+      ],
+      "delivery": [
+        { "platform": "yandex_eda", "confidence": "confirmed" }
+      ]
+    },
+    "KG": {
+      "name": "Kyrgyzstan",
+      "region": "central_asia",
+      "extra_maps_reviews": [
+        { "platform": "2gis", "confidence": "needs_verification" },
+        { "platform": "yandex_maps", "confidence": "needs_verification" }
+      ],
+      "delivery": [
+        { "platform": "yandex_eda", "confidence": "confirmed" }
+      ]
+    },
+    "TJ": {
+      "name": "Tajikistan",
+      "region": "central_asia",
+      "extra_maps_reviews": [
+        { "platform": "2gis", "confidence": "needs_verification" }
+      ],
+      "delivery": []
+    },
+    "TM": {
+      "name": "Turkmenistan",
+      "region": "central_asia",
+      "extra_maps_reviews": [],
+      "delivery": []
+    },
+
     "FR": {
       "name": "France",
       "region": "western_europe",

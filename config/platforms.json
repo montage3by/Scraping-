@@ -114,6 +114,24 @@
       "risk": "medium"
     },
     {
+      "id": "yandex_eda",
+      "name": "Yandex Eda (Yandex Food delivery)",
+      "category": "delivery",
+      "collection_method": "browser",
+      "official_api_available": false,
+      "api_notes": "Distinct product from Yandex Maps — confirmed active in Kazakhstan, Uzbekistan, Armenia, Georgia.",
+      "risk": "medium"
+    },
+    {
+      "id": "chocofood",
+      "name": "Chocofood",
+      "category": "delivery",
+      "collection_method": "browser",
+      "official_api_available": false,
+      "api_notes": "Kazakhstan-founded local delivery platform, strong regional presence.",
+      "risk": "medium"
+    },
+    {
       "id": "google_news",
       "name": "Google News (RSS)",
       "category": "news",
