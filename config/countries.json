@@ -156,6 +156,28 @@
         { "platform": "uber_eats", "confidence": "needs_verification" }
       ]
     },
+    "ES": {
+      "name": "Spain",
+      "region": "western_europe",
+      "extra_maps_reviews": [
+        { "platform": "thefork", "confidence": "confirmed" }
+      ],
+      "delivery": [
+        { "platform": "glovo", "confidence": "confirmed" },
+        { "platform": "uber_eats", "confidence": "confirmed" }
+      ]
+    },
+    "IT": {
+      "name": "Italy",
+      "region": "western_europe",
+      "extra_maps_reviews": [
+        { "platform": "thefork", "confidence": "confirmed" }
+      ],
+      "delivery": [
+        { "platform": "glovo", "confidence": "confirmed" },
+        { "platform": "uber_eats", "confidence": "confirmed" }
+      ]
+    },
 
     "PL": {
       "name": "Poland",
@@ -224,6 +246,24 @@
       "delivery": [
         { "platform": "bolt_food", "confidence": "confirmed" },
         { "platform": "wolt", "confidence": "confirmed" }
+      ]
+    },
+    "BG": {
+      "name": "Bulgaria",
+      "region": "eastern_europe",
+      "extra_maps_reviews": [],
+      "delivery": [
+        { "platform": "glovo", "confidence": "needs_verification" },
+        { "platform": "wolt", "confidence": "needs_verification" }
+      ]
+    },
+    "UA": {
+      "name": "Ukraine",
+      "region": "eastern_europe",
+      "extra_maps_reviews": [],
+      "delivery": [
+        { "platform": "bolt_food", "confidence": "confirmed" },
+        { "platform": "glovo", "confidence": "confirmed" }
       ]
     }
   }
