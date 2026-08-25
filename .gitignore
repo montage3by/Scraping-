@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 backend/queue.db
 backend/__pycache__/
+backend/_job_output/

@@ -115,6 +115,33 @@ def build_report(results: list[CollectionResult], restaurant_name: str, city: st
     )
 
 
+def render_text_summary(report: ReportData) -> str:
+    """Plain-text version of the report for the email body — used as the
+    whole message when there's no PDF attachment yet, and as a readable
+    summary alongside it when there is."""
+    lines = [
+        f"Отчёт о репутации: {report.restaurant_name} ({report.city}, {report.country})",
+        f"Сформирован: {report.generated_at}",
+        "",
+        f"Всего упоминаний: {report.total_mentions}",
+        f"Позитив {report.positive_pct}% / Негатив {report.negative_pct}% / Нейтрально {report.neutral_pct}%",
+        "",
+    ]
+    if report.alerts:
+        lines.append("Алерты:")
+        for a in report.alerts:
+            lines.append(f"  [{a.level.upper()}] {a.message}")
+        lines.append("")
+    if report.platform_breakdown:
+        lines.append("По площадкам:")
+        for platform, count in report.platform_breakdown.items():
+            lines.append(f"  {platform}: {count}")
+        lines.append("")
+    if report.sources_failed:
+        lines.append(f"Не удалось собрать: {', '.join(report.sources_failed)}")
+    return "\n".join(lines)
+
+
 def to_json_dict(report: ReportData) -> dict:
     """Flattens ReportData (incl. nested Mention objects) into plain JSON for build_docx.js."""
     def mention_dict(m: Mention) -> dict:
