@@ -19,7 +19,7 @@ import urllib.request
 import uuid
 from pathlib import Path
 
-logger = logging.getLogger("repas.telegram")
+logger = logging.getLogger("dailyyolk.telegram")
 
 API_BASE = "https://api.telegram.org/bot{token}/{method}"
 

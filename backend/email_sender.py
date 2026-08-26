@@ -13,10 +13,10 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-logger = logging.getLogger("repas.email")
+logger = logging.getLogger("dailyyolk.email")
 
 RESEND_API_URL = "https://api.resend.com/emails"
-FROM_ADDRESS = os.environ.get("EMAIL_FROM", "Repas <reports@repas.example>")
+FROM_ADDRESS = os.environ.get("EMAIL_FROM", "Daily Yolk <reports@dailyyolk.example>")
 
 
 class EmailSendError(Exception):

@@ -28,7 +28,7 @@ def test_dry_run_does_not_raise_with_nonexistent_pdf_path(tmp_path):
 
 def test_dry_run_logs_would_send_message(caplog):
     import logging
-    with caplog.at_level(logging.INFO, logger="repas.email"):
+    with caplog.at_level(logging.INFO, logger="dailyyolk.email"):
         send_report_email(to="owner@example.com", restaurant_name="Picasso", pdf_path=None, summary_text="Report body")
     assert any("DRY RUN" in r.message for r in caplog.records)
     assert any("owner@example.com" in r.message for r in caplog.records)

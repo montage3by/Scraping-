@@ -3,7 +3,7 @@
   "platforms": [
     {
       "id": "own_blog",
-      "name": "Собственный блог Repas",
+      "name": "Собственный блог Daily Yolk",
       "automation_tier": 1,
       "api_notes": "WordPress REST API or Ghost Admin API — either gives real unattended publish. Requires the blog to exist first (not built yet, see program plan open question).",
       "regions": ["caucasus", "central_asia", "western_europe", "eastern_europe"],

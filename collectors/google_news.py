@@ -22,7 +22,7 @@ from collectors.base import PlatformCollector
 from collectors.models import CollectionResult, Mention
 
 RSS_URL = "https://news.google.com/rss/search"
-USER_AGENT = "Mozilla/5.0 (compatible; RepasBot/1.0; +https://repas.example)"
+USER_AGENT = "Mozilla/5.0 (compatible; DailyYolkBot/1.0; +https://dailyyolk.example)"
 
 
 class GoogleNewsCollector(PlatformCollector):

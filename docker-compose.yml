@@ -6,7 +6,7 @@ services:
     env_file:
       - .env
     volumes:
-      - repas_data:/app/backend/_data
+      - dailyyolk_data:/app/backend/_data
     environment:
       - QUEUE_DB_PATH=/app/backend/_data/queue.db
 
@@ -16,11 +16,11 @@ services:
     env_file:
       - .env
     volumes:
-      - repas_data:/app/backend/_data
+      - dailyyolk_data:/app/backend/_data
     environment:
       - QUEUE_DB_PATH=/app/backend/_data/queue.db
     depends_on:
       - backend
 
 volumes:
-  repas_data:
+  dailyyolk_data:

@@ -26,7 +26,7 @@ from collectors.models import CollectionResult
 from collectors.registry import get_collector
 from report.analysis import build_report, render_text_summary, to_json_dict
 
-logger = logging.getLogger("repas.worker")
+logger = logging.getLogger("dailyyolk.worker")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 
 REPORT_DIR = Path(__file__).parents[1] / "report"
