@@ -165,7 +165,10 @@ def build_report(
         rated_competitors = [c for c in competitors if c.rating is not None]
         if rated_competitors:
             best_competitor = max(rated_competitors, key=lambda c: c.rating)
-            if best_competitor.rating - own_avg_rating >= 0.3:
+            # round() guards against float dust at the boundary (e.g.
+            # 4.3 - 4.0 == 0.2999999999999998 in Python) silently missing
+            # the documented >= 0.3 threshold.
+            if round(best_competitor.rating - own_avg_rating, 2) >= 0.3:
                 alerts.append(Alert(
                     "warning",
                     f"{best_competitor.name} rated {best_competitor.rating} vs your {own_avg_rating} — worth a look",
