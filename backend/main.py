@@ -9,6 +9,7 @@ next step once a server exists.
 
 import re
 import sys
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
@@ -21,7 +22,14 @@ from config.platforms import get_platforms_for_country  # noqa: E402
 
 from . import db
 
-app = FastAPI(title="Restaurant Reputation MVP")
+
+@asynccontextmanager
+async def _lifespan(app: FastAPI):
+    db.init_db()
+    yield
+
+
+app = FastAPI(title="Restaurant Reputation MVP", lifespan=_lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -29,11 +37,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.on_event("startup")
-def _startup() -> None:
-    db.init_db()
 
 
 class SubmitRequest(BaseModel):
