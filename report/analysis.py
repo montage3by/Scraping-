@@ -4,6 +4,12 @@ the structured data the docx report builder renders.
 Deliberately simple keyword-based sentiment for the MVP — good enough to
 flag alerts and sort mentions; swap for an LLM-based pass later if the
 keyword approach proves too coarse on real data.
+
+Matching is language-agnostic on purpose: a mention's language isn't
+detected, every known word (any language) is checked against the text.
+That's fine for keyword matching (no need to know which language a review
+is in before checking it) and keeps this simple — just keep the per-language
+sets honest about confidence, see the Georgian note below.
 """
 
 from collections import Counter
@@ -12,15 +18,56 @@ from datetime import datetime, timezone
 
 from collectors.models import CollectionResult, Mention
 
-POSITIVE_WORDS = {
-    "great", "excellent", "amazing", "delicious", "friendly", "perfect",
-    "love", "best", "recommend", "wonderful", "fantastic", "cozy", "fresh",
+# Keyed by language so it's obvious what's covered and what isn't — flatten
+# into POSITIVE_WORDS/NEGATIVE_WORDS/CRISIS_WORDS below rather than scoring
+# per-language (matching doesn't need to know which language a review is in).
+_SENTIMENT_BY_LANGUAGE = {
+    "en": {
+        "positive": {
+            "great", "excellent", "amazing", "delicious", "friendly", "perfect",
+            "love", "best", "recommend", "wonderful", "fantastic", "cozy", "fresh",
+        },
+        "negative": {
+            "bad", "terrible", "awful", "worst", "poor", "disappointing", "slow",
+            "rude", "cold", "overpriced", "dirty", "poisoning", "sick",
+        },
+    },
+    "ru": {
+        # High confidence — Russian is a priority language for this product
+        # (widely used across Caucasus/Central Asia business audiences, not
+        # just literally Russia).
+        "positive": {
+            "отлично", "прекрасно", "прекрасный", "вкусно", "вкусный",
+            "дружелюбный", "уютно", "уютный", "рекомендую", "лучший",
+            "супер", "великолепно", "чисто", "быстро",
+        },
+        "negative": {
+            "плохо", "ужасно", "отвратительно", "грубый", "хамство",
+            "холодный", "дорого", "грязно", "медленно", "долго ждали",
+            "испортил", "отравление", "тошнота", "невкусно",
+        },
+    },
+    "ka": {
+        # LOW CONFIDENCE — only the handful of words I'm genuinely sure of.
+        # Needs a native Georgian speaker's review before this is trusted at
+        # the same level as en/ru. Do not extend this list by guessing.
+        "positive": {"კარგი", "გემრიელი", "საუკეთესო"},
+        "negative": set(),
+    },
+    # Armenian, Kazakh, Uzbek: deliberately not included yet — didn't have
+    # enough confidence in exact review-relevant vocabulary to avoid
+    # shipping wrong words in a script I can't proofread reliably myself.
+    # Add a new "hy"/"kk"/"uz" entry here once reviewed by a speaker,
+    # following the same {"positive": {...}, "negative": {...}} shape.
 }
-NEGATIVE_WORDS = {
-    "bad", "terrible", "awful", "worst", "poor", "disappointing", "slow",
-    "rude", "cold", "overpriced", "dirty", "poisoning", "sick",
+
+POSITIVE_WORDS: set[str] = {w for lang in _SENTIMENT_BY_LANGUAGE.values() for w in lang["positive"]}
+NEGATIVE_WORDS: set[str] = {w for lang in _SENTIMENT_BY_LANGUAGE.values() for w in lang["negative"]}
+
+CRISIS_WORDS = {
+    "poisoning", "sick", "hygiene", "lawsuit", "health inspector", "roach", "vomit",
+    "отравление", "тошнота", "антисанитария", "таракан", "суд", "роспотребнадзор",
 }
-CRISIS_WORDS = {"poisoning", "sick", "hygiene", "lawsuit", "health inspector", "roach", "vomit"}
 
 
 @dataclass
