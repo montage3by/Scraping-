@@ -5,3 +5,4 @@ __pycache__/
 backend/queue.db
 backend/__pycache__/
 backend/_job_output/
+.claude/worktrees/
