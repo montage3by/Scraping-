@@ -107,6 +107,22 @@ if (data.top_negative.length) {
   for (const m of data.top_negative) children.push(...mentionBlock(m));
 }
 
+// Competitors section always renders last, after every reputation section
+// above — auto-discovered enrichment, not the primary deliverable. See
+// report/analysis.py's build_report() for why it's ordered this way.
+if (data.competitors && data.competitors.length) {
+  children.push(heading("Nearby competitors (auto-detected)"));
+  const rows = [["You", data.own_avg_rating != null ? String(data.own_avg_rating) : "n/a"]];
+  for (const c of data.competitors) {
+    rows.push([c.name, c.rating != null ? String(c.rating) : "rating not found"]);
+  }
+  children.push(metricsTable(rows));
+  children.push(bodyText(
+    "Found automatically based on your city — not a claim these are your closest or only competitors.",
+    { italics: true, color: "888888", size: 18 }
+  ));
+}
+
 const doc = new Document({
   sections: [{ properties: { page: { size: { width: 12240, height: 15840 } } }, children }],
 });

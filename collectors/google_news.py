@@ -56,8 +56,17 @@ class GoogleNewsCollector(PlatformCollector):
             )
 
     def _fetch(self, restaurant_name: str, city: str, max_reviews: int) -> list[Mention]:
-        query = urllib.parse.quote(f'"{restaurant_name}" {city}')
+        # "restaurant" is deliberately in the query itself, not just the name
+        # in quotes — verified live against a real restaurant name that's
+        # also a common word ("Picasso"): without it, results skew toward
+        # unrelated matches for the word itself (painter Pablo Picasso
+        # articles) rather than the actual restaurant.
+        query = urllib.parse.quote(f'"{restaurant_name}" restaurant {city}')
         url = f"{RSS_URL}?q={query}&hl=en-US&gl=US&ceid=US:en"
+        # Residual limitation, not fully fixable by query tuning: a
+        # restaurant named after something famous (tested live with
+        # "Picasso") can still surface unrelated results about the famous
+        # thing itself. Fine for an MVP signal, not perfect precision.
 
         req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
         with urllib.request.urlopen(req, timeout=15) as resp:

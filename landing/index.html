@@ -786,6 +786,11 @@
             <p class="field__error">Введите корректный email</p>
           </div>
 
+          <div class="field" data-field="competitor_hint">
+            <label for="competitor_hint">Какой конкурент вас интересует? <span style="font-weight:400;color:var(--ink-soft)">(необязательно)</span></label>
+            <input id="competitor_hint" name="competitor_hint" type="text" placeholder="Например, «Кафе Рома» — не обязательно, мы и сами найдём ближайших" />
+          </div>
+
           <button class="btn btn--accent submit-btn" type="submit">
             <span id="submitLabel">Отправить и получить отчёт</span>
           </button>
@@ -873,7 +878,8 @@
         restaurant_name: form.restaurant_name.value,
         city: form.city.value,
         country: form.country.value,
-        email: form.email.value
+        email: form.email.value,
+        competitor_hint: form.competitor_hint.value
       };
 
       var errors = validate(data);

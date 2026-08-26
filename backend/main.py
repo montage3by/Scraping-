@@ -41,6 +41,7 @@ class SubmitRequest(BaseModel):
     city: str
     country: str
     email: EmailStr
+    competitor_hint: str | None = None  # optional — "какой конкурент вас интересует", auto-discovery covers the rest
 
     @field_validator("restaurant_name", "city")
     @classmethod
@@ -49,6 +50,15 @@ class SubmitRequest(BaseModel):
         if not v:
             raise ValueError("must not be blank")
         return v
+
+    @field_validator("competitor_hint")
+    @classmethod
+    def _blank_hint_is_none(cls, v: str | None) -> str | None:
+        # An empty string from an unfilled optional form field should behave
+        # exactly like the field being absent, not like "look up a competitor
+        # named ''".
+        v = (v or "").strip()
+        return v or None
 
     @field_validator("country")
     @classmethod
@@ -77,6 +87,7 @@ def submit(payload: SubmitRequest) -> SubmitResponse:
         country=payload.country,
         email=payload.email,
         platforms=platforms,
+        competitor_hint=payload.competitor_hint,
     )
     return SubmitResponse(job_id=job_id, platforms_planned=[p["name"] for p in platforms])
 

@@ -15,8 +15,9 @@ sets honest about confidence, see the Georgian note below.
 from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from typing import Optional
 
-from collectors.models import CollectionResult, Mention
+from collectors.models import CollectionResult, Competitor, Mention
 
 # Keyed by language so it's obvious what's covered and what isn't — flatten
 # into POSITIVE_WORDS/NEGATIVE_WORDS/CRISIS_WORDS below rather than scoring
@@ -92,6 +93,9 @@ class ReportData:
     top_negative: list[Mention]
     sources_ok: list[str]
     sources_failed: list[str]  # platform names that errored — see CollectionResult.success
+    own_avg_rating: Optional[float]  # None if no rated mentions were collected
+    competitors: list[Competitor]    # second-class citizen by design — see build_report(); always
+                                      # rendered after the reputation section, never before it
 
 
 def _score_sentiment(text: str) -> int:
@@ -111,7 +115,14 @@ def _has_crisis_keyword(text: str) -> bool:
     return any(w in lowered for w in CRISIS_WORDS)
 
 
-def build_report(results: list[CollectionResult], restaurant_name: str, city: str, country: str) -> ReportData:
+def build_report(
+    results: list[CollectionResult],
+    restaurant_name: str,
+    city: str,
+    country: str,
+    competitors: list[Competitor] | None = None,
+) -> ReportData:
+    competitors = competitors or []
     all_mentions: list[Mention] = []
     platform_breakdown: Counter = Counter()
     sources_ok, sources_failed = [], []
@@ -144,6 +155,22 @@ def build_report(results: list[CollectionResult], restaurant_name: str, city: st
     if sources_failed:
         alerts.append(Alert("warning", f"Could not collect from: {', '.join(sources_failed)} — report is based on partial data"))
 
+    rated_mentions = [m for m in all_mentions if m.rating is not None]
+    own_avg_rating = round(sum(m.rating for m in rated_mentions) / len(rated_mentions), 2) if rated_mentions else None
+
+    # Competitor alerts are appended last on purpose — reputation alerts
+    # (negative ratio, crisis keywords, failed sources) always take priority
+    # in the list, matching "сначала анализ репутации, потом конкурентов".
+    if own_avg_rating is not None:
+        rated_competitors = [c for c in competitors if c.rating is not None]
+        if rated_competitors:
+            best_competitor = max(rated_competitors, key=lambda c: c.rating)
+            if best_competitor.rating - own_avg_rating >= 0.3:
+                alerts.append(Alert(
+                    "warning",
+                    f"{best_competitor.name} rated {best_competitor.rating} vs your {own_avg_rating} — worth a look",
+                ))
+
     return ReportData(
         restaurant_name=restaurant_name,
         city=city,
@@ -159,6 +186,8 @@ def build_report(results: list[CollectionResult], restaurant_name: str, city: st
         top_negative=sorted(neg, key=lambda m: m.rating or 5)[:3],
         sources_ok=sources_ok,
         sources_failed=sources_failed,
+        own_avg_rating=own_avg_rating,
+        competitors=competitors,
     )
 
 
@@ -186,6 +215,18 @@ def render_text_summary(report: ReportData) -> str:
         lines.append("")
     if report.sources_failed:
         lines.append(f"Не удалось собрать: {', '.join(report.sources_failed)}")
+
+    # Competitors section always comes last — reputation analysis is the
+    # primary deliverable, competitors is a "и ещё" addendum, per product decision.
+    if report.competitors:
+        lines.append("")
+        lines.append("Конкуренты поблизости (авто-подбор):")
+        own = f"{report.own_avg_rating}" if report.own_avg_rating is not None else "н/д"
+        lines.append(f"  Вы ({report.restaurant_name}): {own}")
+        for c in report.competitors:
+            rating = f"{c.rating}" if c.rating is not None else "рейтинг не найден"
+            lines.append(f"  {c.name}: {rating}")
+
     return "\n".join(lines)
 
 
@@ -209,4 +250,11 @@ def to_json_dict(report: ReportData) -> dict:
         "top_negative": [mention_dict(m) for m in report.top_negative],
         "sources_ok": report.sources_ok,
         "sources_failed": report.sources_failed,
+        "own_avg_rating": report.own_avg_rating,
+        # Rendered as its own section in build_docx.js, placed after the
+        # reputation sections — see that file's section ordering.
+        "competitors": [
+            {"name": c.name, "rating": c.rating, "source_url": c.source_url}
+            for c in report.competitors
+        ],
     }

@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     city TEXT NOT NULL,
     country TEXT NOT NULL,
     email TEXT NOT NULL,
+    competitor_hint TEXT,                    -- optional quiz field, NULL if the user left it blank
     status TEXT NOT NULL DEFAULT 'queued',   -- queued | running | done | failed
     platforms_json TEXT NOT NULL,            -- resolved platform plan at submit time
     error TEXT,
@@ -48,14 +49,21 @@ def init_db() -> None:
         conn.execute(SCHEMA)
 
 
-def enqueue_job(restaurant_name: str, city: str, country: str, email: str, platforms: list[dict]) -> str:
+def enqueue_job(
+    restaurant_name: str,
+    city: str,
+    country: str,
+    email: str,
+    platforms: list[dict],
+    competitor_hint: str | None = None,
+) -> str:
     job_id = str(uuid.uuid4())
     now = datetime.now(timezone.utc).isoformat()
     with get_conn() as conn:
         conn.execute(
-            """INSERT INTO jobs (id, restaurant_name, city, country, email, status, platforms_json, created_at, updated_at)
-               VALUES (?, ?, ?, ?, ?, 'queued', ?, ?, ?)""",
-            (job_id, restaurant_name, city, country, email, json.dumps(platforms), now, now),
+            """INSERT INTO jobs (id, restaurant_name, city, country, email, competitor_hint, status, platforms_json, created_at, updated_at)
+               VALUES (?, ?, ?, ?, ?, ?, 'queued', ?, ?, ?)""",
+            (job_id, restaurant_name, city, country, email, competitor_hint, json.dumps(platforms), now, now),
         )
     return job_id
 

@@ -21,6 +21,7 @@ from playwright.async_api import async_playwright
 
 from backend import db
 from backend.email_sender import send_report_email
+from collectors.competitor_discovery import discover_competitors
 from collectors.models import CollectionResult
 from collectors.registry import get_collector
 from report.analysis import build_report, render_text_summary, to_json_dict
@@ -99,11 +100,21 @@ async def process_job(browser, job: dict) -> None:
             browser, job["restaurant_name"], job["city"], job["country"], platforms
         )
 
+        # Competitors run second, after the reputation collection is done —
+        # "сначала анализ репутации, потом конкурентов". Best-effort: a
+        # failure here (discover_competitors already swallows its own
+        # exceptions) never blocks the report, it just ships without that section.
+        competitors = await discover_competitors(
+            browser, job["restaurant_name"], job["city"],
+            competitor_hint=job.get("competitor_hint"),
+        )
+
         report = build_report(
             collection_results,
             restaurant_name=job["restaurant_name"],
             city=job["city"],
             country=job["country"],
+            competitors=competitors,
         )
         report_dict = to_json_dict(report)
         summary_text = render_text_summary(report)
