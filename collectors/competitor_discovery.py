@@ -23,7 +23,7 @@ import re
 
 from playwright.async_api import Browser
 
-from collectors._browser_common import human_pause
+from collectors._browser_common import human_pause, url_query
 from collectors.models import Competitor
 
 SEARCH_URL = "https://www.google.com/maps/search/"
@@ -46,7 +46,7 @@ async def _find_named_competitor(browser: Browser, name: str, city: str) -> Comp
     the same "might match the wrong branch for a common name" caveat."""
     page = await browser.new_page(locale="en-US")
     try:
-        await page.goto(f"{SEARCH_URL}{name} {city}", timeout=30_000)
+        await page.goto(f"{SEARCH_URL}{url_query(f'{name} {city}')}", timeout=30_000)
         await human_pause(1.5, 3.0)
 
         card = page.locator('a[href*="/maps/place/"]').first
@@ -97,7 +97,7 @@ async def discover_competitors(
         # Generic "restaurants near <city>" rather than matching the target's
         # cuisine — we don't reliably know the cuisine type without an extra
         # lookup, and a generic query still surfaces genuinely nearby competitors.
-        query = f"restaurants {city}"
+        query = url_query(f"restaurants {city}")
         await page.goto(f"{SEARCH_URL}{query}", timeout=30_000)
         await human_pause(1.5, 3.0)
 

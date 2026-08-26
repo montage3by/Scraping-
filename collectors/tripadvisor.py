@@ -17,7 +17,7 @@ import re
 
 from playwright.async_api import Browser, Page
 
-from collectors._browser_common import human_pause
+from collectors._browser_common import human_pause, url_query
 from collectors.base import PlatformCollector
 from collectors.models import CollectionResult, Mention
 
@@ -58,7 +58,7 @@ class TripadvisorCollector(PlatformCollector):
             await page.close()
 
     async def _collect(self, page: Page, restaurant_name: str, city: str, max_reviews: int) -> list[Mention]:
-        query = f"{restaurant_name} {city}"
+        query = url_query(f"{restaurant_name} {city}")
         await page.goto(f"{SEARCH_URL}?q={query}", timeout=30_000)
         await human_pause(1.5, 3.0)
 

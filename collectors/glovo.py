@@ -11,7 +11,7 @@ import re
 
 from playwright.async_api import Browser, Page
 
-from collectors._browser_common import human_pause
+from collectors._browser_common import human_pause, url_query
 from collectors.base import PlatformCollector
 from collectors.models import CollectionResult, Mention
 
@@ -45,7 +45,7 @@ class GlovoCollector(PlatformCollector):
             await page.close()
 
     async def _collect(self, page: Page, restaurant_name: str, city: str, max_reviews: int) -> list[Mention]:
-        query = f"{restaurant_name} {city}"
+        query = url_query(f"{restaurant_name} {city}")
         # TODO(verify on real server): Glovo may redirect a bare search to a
         # city-picker/onboarding flow before it accepts a query — this
         # single-request approach might need a city-selection step first.

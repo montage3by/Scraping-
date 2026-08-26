@@ -15,7 +15,7 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel, EmailStr, field_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 sys.path.insert(0, str(Path(__file__).parents[1]))  # so `config.platforms` resolves when run standalone
 from config.platforms import get_platforms_for_country  # noqa: E402
@@ -40,11 +40,16 @@ app.add_middleware(
 
 
 class SubmitRequest(BaseModel):
-    restaurant_name: str
-    city: str
+    # max_length bounds are defense-in-depth against a public, unauthenticated
+    # form: these values flow into URLs (collectors), a docx report, and
+    # emails downstream — without a cap here, nothing stops an oversized
+    # payload from reaching any of that. 200 chars comfortably covers a real
+    # restaurant/city name in any script (Cyrillic, Georgian, Armenian, ...).
+    restaurant_name: str = Field(max_length=200)
+    city: str = Field(max_length=200)
     country: str
     email: EmailStr
-    competitor_hint: str | None = None  # optional — "какой конкурент вас интересует", auto-discovery covers the rest
+    competitor_hint: str | None = Field(default=None, max_length=200)  # optional — "какой конкурент вас интересует", auto-discovery covers the rest
 
     @field_validator("restaurant_name", "city")
     @classmethod

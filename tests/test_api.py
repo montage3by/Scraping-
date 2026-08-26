@@ -157,3 +157,44 @@ def test_get_job_returns_submitted_job(client):
 def test_get_job_404_for_unknown_id(client):
     resp = client.get("/api/jobs/does-not-exist")
     assert resp.status_code == 404
+
+
+def test_submit_rejects_oversized_restaurant_name(client):
+    resp = client.post("/api/submit", json={
+        "restaurant_name": "A" * 201,
+        "city": "Tbilisi",
+        "country": "GE",
+        "email": "owner@example.com",
+    })
+    assert resp.status_code == 422
+
+
+def test_submit_rejects_oversized_city(client):
+    resp = client.post("/api/submit", json={
+        "restaurant_name": "Picasso",
+        "city": "A" * 201,
+        "country": "GE",
+        "email": "owner@example.com",
+    })
+    assert resp.status_code == 422
+
+
+def test_submit_rejects_oversized_competitor_hint(client):
+    resp = client.post("/api/submit", json={
+        "restaurant_name": "Picasso",
+        "city": "Tbilisi",
+        "country": "GE",
+        "email": "owner@example.com",
+        "competitor_hint": "A" * 201,
+    })
+    assert resp.status_code == 422
+
+
+def test_submit_accepts_restaurant_name_at_the_length_boundary(client):
+    resp = client.post("/api/submit", json={
+        "restaurant_name": "A" * 200,
+        "city": "Tbilisi",
+        "country": "GE",
+        "email": "owner@example.com",
+    })
+    assert resp.status_code == 200
