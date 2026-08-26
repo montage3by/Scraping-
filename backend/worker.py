@@ -6,16 +6,15 @@ collectors/registry.py) — every other platform in a job's plan comes back
 as a clean "collector not implemented yet" result instead of silently
 skipping it, so the report is honest about what it actually checked.
 
-Same PDF caveat as report/demo.py: LibreOffice conversion doesn't work in
-this sandbox. The worker falls back to emailing the text summary alone
-when the PDF isn't available, so the pipeline still completes end to end.
+Requires `soffice` (LibreOffice) on PATH for PDF conversion — see Dockerfile.
+Falls back to emailing the text summary alone when conversion isn't
+available, so the pipeline still completes end to end either way.
 """
 
 import asyncio
 import json
 import logging
 import subprocess
-import sys
 from pathlib import Path
 
 from playwright.async_api import async_playwright
@@ -31,7 +30,11 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name
 
 REPORT_DIR = Path(__file__).parents[1] / "report"
 BUILD_DOCX_JS = REPORT_DIR / "build_docx.js"
-SOFFICE_PY = Path("/mnt/skills/public/docx/scripts/office/soffice.py")
+# Plain "soffice" on PATH — works on any server with `apt install libreoffice`
+# (see Dockerfile). Earlier versions of this file called a Claude-skill-specific
+# helper script that only exists inside this dev sandbox and would have failed
+# identically-but-for-a-different-reason on a real server — caught before deploy.
+SOFFICE_BIN = "soffice"
 JOB_OUTPUT_DIR = Path(__file__).parent / "_job_output"
 
 
@@ -74,7 +77,7 @@ def build_pdf(report_dict: dict, job_id: str) -> Path | None:
         return None
 
     convert = subprocess.run(
-        [sys.executable, str(SOFFICE_PY), "--headless", "--convert-to", "pdf", "--outdir", str(JOB_OUTPUT_DIR), str(docx_path)],
+        [SOFFICE_BIN, "--headless", "--convert-to", "pdf", "--outdir", str(JOB_OUTPUT_DIR), str(docx_path)],
         capture_output=True, text=True,
     )
     if convert.returncode == 0 and pdf_path.exists():

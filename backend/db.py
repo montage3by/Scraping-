@@ -4,13 +4,17 @@ processed by the collector pipeline.
 """
 
 import json
+import os
 import sqlite3
 import uuid
 from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
-DB_PATH = Path(__file__).parent / "queue.db"
+# Overridable so backend and worker can share one queue.db across containers
+# (see docker-compose.yml's QUEUE_DB_PATH + shared volume) instead of each
+# getting its own file next to this module.
+DB_PATH = Path(os.environ.get("QUEUE_DB_PATH", Path(__file__).parent / "queue.db"))
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS jobs (
