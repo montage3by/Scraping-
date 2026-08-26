@@ -13,19 +13,15 @@ first and expect to fix selectors against the actual current markup.
 """
 
 import asyncio
-import random
 import re
 
 from playwright.async_api import Browser, Page
 
+from collectors._browser_common import human_pause
 from collectors.base import PlatformCollector
 from collectors.models import CollectionResult, Mention
 
 SEARCH_URL = "https://www.tripadvisor.com/Search"
-
-
-async def _human_pause(min_s: float = 0.8, max_s: float = 2.2) -> None:
-    await asyncio.sleep(random.uniform(min_s, max_s))
 
 
 class TripadvisorCollector(PlatformCollector):
@@ -64,14 +60,14 @@ class TripadvisorCollector(PlatformCollector):
     async def _collect(self, page: Page, restaurant_name: str, city: str, max_reviews: int) -> list[Mention]:
         query = f"{restaurant_name} {city}"
         await page.goto(f"{SEARCH_URL}?q={query}", timeout=30_000)
-        await _human_pause(1.5, 3.0)
+        await human_pause(1.5, 3.0)
 
         # Search results list restaurants/hotels/attractions together — take
         # the first link that points at a restaurant review page specifically.
         result_link = page.locator('a[href*="/Restaurant_Review-"]').first
         if await result_link.count() > 0:
             await result_link.click()
-            await _human_pause()
+            await human_pause()
         elif "/Restaurant_Review-" not in page.url:
             # No matching restaurant result at all — nothing further to do.
             return []
@@ -81,12 +77,12 @@ class TripadvisorCollector(PlatformCollector):
         reviews_tab = page.get_by_role("tab", name=re.compile("review", re.I))
         if await reviews_tab.count() > 0:
             await reviews_tab.click()
-            await _human_pause()
+            await human_pause()
 
         # Scroll a few times to lazy-load enough reviews.
         for _ in range(4):
             await page.mouse.wheel(0, 1600)
-            await _human_pause(1.0, 2.0)
+            await human_pause(1.0, 2.0)
 
         review_cards = page.locator("[data-reviewid]")
         count = min(await review_cards.count(), max_reviews)

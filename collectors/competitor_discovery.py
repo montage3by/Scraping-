@@ -19,18 +19,14 @@ the real server, not just reuse of google_maps.py's.
 """
 
 import asyncio
-import random
 import re
 
 from playwright.async_api import Browser
 
+from collectors._browser_common import human_pause
 from collectors.models import Competitor
 
 SEARCH_URL = "https://www.google.com/maps/search/"
-
-
-async def _human_pause(min_s: float = 0.8, max_s: float = 2.2) -> None:
-    await asyncio.sleep(random.uniform(min_s, max_s))
 
 
 def _looks_like_same_restaurant(candidate_name: str, target_name: str) -> bool:
@@ -51,7 +47,7 @@ async def _find_named_competitor(browser: Browser, name: str, city: str) -> Comp
     page = await browser.new_page(locale="en-US")
     try:
         await page.goto(f"{SEARCH_URL}{name} {city}", timeout=30_000)
-        await _human_pause(1.5, 3.0)
+        await human_pause(1.5, 3.0)
 
         card = page.locator('a[href*="/maps/place/"]').first
         if await card.count() == 0:
@@ -103,7 +99,7 @@ async def discover_competitors(
         # lookup, and a generic query still surfaces genuinely nearby competitors.
         query = f"restaurants {city}"
         await page.goto(f"{SEARCH_URL}{query}", timeout=30_000)
-        await _human_pause(1.5, 3.0)
+        await human_pause(1.5, 3.0)
 
         # Search results render as a scrollable feed of place cards, each an
         # <a href=".../maps/place/..."> with the name and rating in nearby
@@ -114,7 +110,7 @@ async def discover_competitors(
             if await feed.count() == 0:
                 break
             await feed.evaluate("el => el.scrollBy(0, el.scrollHeight)")
-            await _human_pause(1.0, 2.0)
+            await human_pause(1.0, 2.0)
 
         cards = page.locator('a[href*="/maps/place/"]')
         total = await cards.count()

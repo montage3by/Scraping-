@@ -10,19 +10,13 @@ orchestrator.
 """
 
 import asyncio
-import random
 import re
 
 from playwright.async_api import Browser, Page
 
+from collectors._browser_common import human_pause
 from collectors.base import PlatformCollector
 from collectors.models import CollectionResult, Mention
-
-
-async def _human_pause(min_s: float = 0.8, max_s: float = 2.2) -> None:
-    """Small randomized delay between actions — see the whole conversation's
-    discussion on why fixed-interval scripted timing is what gets flagged."""
-    await asyncio.sleep(random.uniform(min_s, max_s))
 
 
 class GoogleMapsCollector(PlatformCollector):
@@ -61,20 +55,20 @@ class GoogleMapsCollector(PlatformCollector):
     async def _collect(self, page: Page, restaurant_name: str, city: str, max_reviews: int) -> list[Mention]:
         query = f"{restaurant_name} {city}"
         await page.goto(f"https://www.google.com/maps/search/{query}", timeout=30_000)
-        await _human_pause(1.5, 3.0)
+        await human_pause(1.5, 3.0)
 
         # A specific-enough query usually lands directly on the place page.
         # If Maps instead shows a results list, click the first result card.
         first_result = page.locator('a[href*="/maps/place/"]').first
         if await first_result.count() > 0 and "/maps/place/" not in page.url:
             await first_result.click()
-            await _human_pause()
+            await human_pause()
 
         # Open the Reviews tab (button text is locale-dependent; en-US -> "Reviews").
         reviews_tab = page.get_by_role("tab", name=re.compile("reviews", re.I))
         if await reviews_tab.count() > 0:
             await reviews_tab.click()
-            await _human_pause()
+            await human_pause()
 
         # The reviews list lives in a scrollable pane — scroll it a few times
         # to lazy-load enough reviews to cover max_reviews.
@@ -83,7 +77,7 @@ class GoogleMapsCollector(PlatformCollector):
             if await scroll_container.count() == 0:
                 break
             await scroll_container.evaluate("el => el.scrollBy(0, el.scrollHeight)")
-            await _human_pause(1.0, 2.0)
+            await human_pause(1.0, 2.0)
 
         review_cards = page.locator('div[data-review-id]')
         count = min(await review_cards.count(), max_reviews)
