@@ -1,0 +1,53 @@
+{
+  "_comment": "Registry of article-publishing platforms. automation_tier: 1 = real API, no gatekeeping, publishes unattended. 2 = real API but needs an approved developer app first (external lead time, like Meta App Review). 3 = editorial/community platform, no autopost path — skill produces a draft for manual submission. Region matching reuses config/countries.json's regions (caucasus, central_asia, western_europe, eastern_europe).",
+  "platforms": [
+    {
+      "id": "own_blog",
+      "name": "Собственный блог Repas",
+      "automation_tier": 1,
+      "api_notes": "WordPress REST API or Ghost Admin API — either gives real unattended publish. Requires the blog to exist first (not built yet, see program plan open question).",
+      "regions": ["caucasus", "central_asia", "western_europe", "eastern_europe"],
+      "languages": ["ru", "en"]
+    },
+    {
+      "id": "telegram_channel",
+      "name": "Telegram-канал",
+      "automation_tier": 1,
+      "api_notes": "Telegram Bot API — simplest and most reliable channel here, no editorial review, no app-approval process.",
+      "regions": ["caucasus", "central_asia", "eastern_europe"],
+      "languages": ["ru"]
+    },
+    {
+      "id": "linkedin_company_page",
+      "name": "LinkedIn (страница компании)",
+      "automation_tier": 2,
+      "api_notes": "Requires LinkedIn Marketing Developer Platform approval — external review process, similar lead time to Meta App Review. Do not treat as available until approval is confirmed.",
+      "regions": ["western_europe", "eastern_europe"],
+      "languages": ["en"]
+    },
+    {
+      "id": "medium",
+      "name": "Medium",
+      "automation_tier": 2,
+      "api_notes": "Medium closed its public Publish API to new integrations — verify current account-level access before relying on this; treat as tier 3 (manual) unless confirmed otherwise.",
+      "regions": ["western_europe", "eastern_europe"],
+      "languages": ["en"]
+    },
+    {
+      "id": "vc_ru",
+      "name": "VC.ru",
+      "automation_tier": 3,
+      "api_notes": "Editorial/community-moderated, no public autopost API. Read by RU-speaking business audiences relevant to Caucasus/Central Asia restaurateurs.",
+      "regions": ["caucasus", "central_asia"],
+      "languages": ["ru"]
+    },
+    {
+      "id": "habr",
+      "name": "Habr",
+      "automation_tier": 3,
+      "api_notes": "Editorial/community-moderated (corporate blogs need a paid subscription; personal posts go through community rating). No autopost path.",
+      "regions": ["caucasus", "central_asia"],
+      "languages": ["ru"]
+    }
+  ]
+}
