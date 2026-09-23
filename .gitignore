@@ -9,3 +9,6 @@ backend/_job_output/
 .env
 .business/
 .claude/settings.local.json
+
+# ScrapeGraphAI just-scrape CLI output (skill .claude/skills/just-scrape)
+.just-scrape/
