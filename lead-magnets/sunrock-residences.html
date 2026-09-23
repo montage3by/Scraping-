@@ -1,0 +1,234 @@
+<title>Аудит Sunrock Residences</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --ground:#F5F6F4; --paper:#FFFFFF; --ink:#18221F; --muted:#5B6862; --line:#DCE2DE;
+  --sea:#0E5E5A; --sea-soft:#E1EFED; --sun:#C47F17; --sun-soft:#FBF0DC;
+  --good:#2F7A4C; --good-soft:#E3F2E8; --warn:#A8690E; --warn-soft:#FBEFD9; --bad:#B03A2E; --bad-soft:#F8E4E1;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif; --body:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark; --ground:#101614; --paper:#17201D; --ink:#E8EEEB; --muted:#9AA9A2; --line:#2A3632;
+  --sea:#5CC2B9; --sea-soft:#15312E; --sun:#E7A849; --sun-soft:#33280F;
+  --good:#6BCB8E; --good-soft:#15301F; --warn:#E6AE55; --warn-soft:#33270F; --bad:#EE7F72; --bad-soft:#3A1C18;}}
+:root[data-theme="dark"]{
+  color-scheme:dark; --ground:#101614; --paper:#17201D; --ink:#E8EEEB; --muted:#9AA9A2; --line:#2A3632;
+  --sea:#5CC2B9; --sea-soft:#15312E; --sun:#E7A849; --sun-soft:#33280F;
+  --good:#6BCB8E; --good-soft:#15301F; --warn:#E6AE55; --warn-soft:#33270F; --bad:#EE7F72; --bad-soft:#3A1C18;}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:16px/1.6 var(--body);padding:0 16px}
+.wrap{max-width:980px;margin:0 auto;padding-block:40px 64px;display:grid;gap:56px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,46px);font-weight:700}
+h2{font-size:clamp(20px,3vw,26px);font-weight:700;margin-bottom:18px}
+h3{font-size:16px;font-weight:500;margin-bottom:8px}
+p{margin:0 0 12px;max-width:68ch}
+a{color:var(--sea)}
+.eyebrow{font:600 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sun)}
+.muted{color:var(--muted)}
+header{display:grid;gap:18px;border-bottom:2px solid var(--ink);padding-bottom:28px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 24px;font:13px/1.4 var(--mono);color:var(--muted)}
+.lede{font-size:18px;max-width:62ch}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.stat{background:var(--paper);padding:18px}
+.stat b{display:block;font:700 26px/1.1 var(--display);font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+.findings{display:grid;gap:12px}
+.f{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;padding:14px 16px;background:var(--paper);border:1px solid var(--line);border-radius:10px}
+.pill{grid-row:span 2;align-self:start;font:600 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:6px 8px;border-radius:999px;white-space:nowrap}
+.pill.bad{background:var(--bad-soft);color:var(--bad)} .pill.warn{background:var(--warn-soft);color:var(--warn)} .pill.good{background:var(--good-soft);color:var(--good)}
+.f b{font-weight:600} .f p{margin:0;font-size:15px;color:var(--muted)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:20px}
+ul.clean{margin:0;padding-left:18px;display:grid;gap:6px}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line)}
+th{font:600 12px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:var(--ground)}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.us td{background:var(--sun-soft)}
+tr.us td:first-child{font-weight:600}
+.bars{display:grid;gap:10px}
+.bar{display:grid;grid-template-columns:150px 1fr 70px;gap:12px;align-items:center;font-size:14px}
+.bar i{display:block;height:14px;border-radius:3px;background:var(--sea)}
+.bar.us i{background:var(--sun)}
+.bar em{font:600 13px var(--mono);font-style:normal;text-align:right}
+.comp{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.comp .panel h3{font-family:var(--display)}
+.tag{display:inline-block;font:12px/1 var(--mono);color:var(--muted);margin-bottom:10px}
+.plus,.minus{margin:6px 0 0;padding-left:18px;font-size:15px}
+.plus li::marker{content:"+  ";color:var(--good);font-weight:700}
+.minus li::marker{content:"−  ";color:var(--bad);font-weight:700}
+ol.recs{margin:0;padding-left:22px;display:grid;gap:12px}
+ol.recs li{padding-left:6px} ol.recs b{display:block}
+.cta{background:var(--sea);color:#fff;border-radius:14px;padding:32px;display:grid;gap:14px}
+.cta h2{margin:0;color:#fff}
+.cta p{color:#E6F2F0}
+.cta a.btn{justify-self:start;background:#fff;color:#0E5E5A;text-decoration:none;font-weight:600;padding:12px 20px;border-radius:999px}
+.cta a.btn:focus-visible,a:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+footer{font-size:13px;color:var(--muted);display:grid;gap:8px}
+@media (max-width:560px){.bar{grid-template-columns:110px 1fr 56px}.wrap{gap:44px}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">Цифровой аудит · MRLN Studio</span>
+  <h1>Sunrock Residences: где проект теряет покупателей и что делают конкуренты</h1>
+  <p class="lede">Мы разобрали сайт и Instagram Sunrock Residences и сравнили их с четырьмя проектами Лимассола — Eden Roc, Belgravia Residences, LEVELS Residences и Heights Residence BD103. Ниже — что уже работает, где утекают заявки и какие шаги дадут эффект быстрее всего.</p>
+  <div class="meta"><span>Лимассол · Гермасойя</span><span>Недвижимость, новостройки премиум-класса</span><span>Данные собраны 23.09.2026</span></div>
+</header>
+
+<section>
+  <h2>Коротко о проекте</h2>
+  <div class="stats">
+    <div class="stat"><b>46</b><span>квартир и пентхаусов, 2–4 спальни</span></div>
+    <div class="stat"><b>116–354 м²</b><span>площадь квартир</span></div>
+    <div class="stat"><b>€529 000</b><span>цена от — только в Instagram, на сайте нет</span></div>
+    <div class="stat"><b>995</b><span>подписчиков в Instagram при 204 постах</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Главные находки</h2>
+  <div class="findings">
+    <div class="f"><span class="pill bad">Критично</span><b>На сайте нет цены</b><p>Цена «от €529 000» есть только в посте Instagram. Покупатель с сайта не понимает, его ли это бюджет, и уходит к проектам, где цена указана: LEVELS показывает «от €280 000», bbf по Eden Roc — «от €2,5 млн».</p></div>
+    <div class="f"><span class="pill bad">Критично</span><b>Ход строительства не обновлялся 8 месяцев</b><p>Последний отчёт на странице «Development progress» — от 01.02.2026, статус проекта — «Delivering Soon». Для покупателя на стадии строительства это сигнал «стройка встала», даже если это не так.</p></div>
+    <div class="f"><span class="pill bad">Критично</span><b>Сломана ссылка на LinkedIn</b><p>Кнопка ведёт не на LinkedIn, а на служебную ссылку Google-поиска, и в итоге на личный профиль (/in/), а не на страницу компании.</p></div>
+    <div class="f"><span class="pill warn">Важно</span><b>Застройщик не назван на сайте</b><p>Blue Reef упоминается только в описании Instagram. У конкурентов застройщик — главный аргумент доверия: bbf пишет «150+ проектов», Boghos — «Design. Develop. Deliver.».</p></div>
+    <div class="f"><span class="pill warn">Важно</span><b>Четыре разных телефона плюс WhatsApp</b><p>На разных страницах указаны +357 94 00 99 99, +357 94 00 88 88, +357 25 123 146 и WhatsApp +357 25 660 237. Непонятно, куда звонить, и сложно отследить, откуда пришла заявка.</p></div>
+    <div class="f"><span class="pill warn">Важно</span><b>Instagram растёт медленно</b><p>995 подписчиков при регулярном постинге — у Boghos 15,1 тыс., у bbf 10,2 тыс. В постах Sunrock нет хэштегов, а закреп — русскоязычный пост 2025 года при англоязычной ленте.</p></div>
+    <div class="f"><span class="pill good">Сильно</span><b>Страница про ВНЖ и инфраструктура комплекса</b><p>Подробная страница о ПМЖ Кипра от €300 000, бассейн 42 м, спа, сауна, хаммам, спортзал, детская зона. Среди мелких проектов района такого набора нет — это надо выносить на первый экран.</p></div>
+    <div class="f"><span class="pill good">Сильно</span><b>Регулярный контент и русская версия сайта</b><p>Посты выходят каждые 3–4 дня, есть хайлайты по планировкам, инвестициям и локации, есть YouTube и Telegram. Русская версия сайта — преимущество перед Belgravia и LEVELS, где сайт только на английском.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Сайт: что видит покупатель</h2>
+  <div class="two">
+    <div class="panel">
+      <h3>Работает</h3>
+      <ul class="clean">
+        <li>Кнопка WhatsApp на каждом экране, форма «Request callback».</li>
+        <li>Отдельные страницы 2-, 3- и 4-спальных квартир с площадями.</li>
+        <li>Раздел о ВНЖ с понятными условиями.</li>
+        <li>Две языковые версии: английская и русская.</li>
+        <li>Ссылки на все соцсети: Instagram, Telegram, Facebook, YouTube.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Мешает продажам</h3>
+      <ul class="clean">
+        <li>Нет цен и нет статуса «продано / забронировано» по квартирам.</li>
+        <li>Нет брошюры или PDF с планировками для скачивания: у Eden Roc и Heights BD103 они есть.</li>
+        <li>Нет отзывов, наград, имени архитектора и застройщика.</li>
+        <li>Отчёт о стройке устарел на 8 месяцев.</li>
+        <li>Опечатка на кнопке: «VEW LOCATION».</li>
+        <li>Сломанная ссылка на LinkedIn, разные телефоны на разных страницах.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Instagram против конкурентов</h2>
+  <p class="muted">Подписчики на 23.09.2026. Leto Group (LEVELS) и Zemco (Belgravia) не собраны: у Zemco Instagram не найден, у Leto профиль не отдался.</p>
+  <div class="bars" role="img" aria-label="Подписчики: Boghos 15 132, bbf 10 246, Prime Property 4 556, Sunrock 995">
+    <div class="bar"><span>Boghos Developments</span><i style="width:100%"></i><em>15 132</em></div>
+    <div class="bar"><span>bbf (Eden Roc)</span><i style="width:67.7%"></i><em>10 246</em></div>
+    <div class="bar"><span>Prime Property (старый аккаунт)</span><i style="width:30.1%"></i><em>4 556</em></div>
+    <div class="bar us"><span><b>Sunrock</b></span><i style="width:6.6%"></i><em>995</em></div>
+  </div>
+  <div class="tablebox" style="margin-top:20px">
+    <table>
+      <thead><tr><th>Аккаунт</th><th>Постов</th><th>Хэштеги</th><th>Ссылка в профиле</th><th>Чем цепляет</th></tr></thead>
+      <tbody>
+        <tr class="us"><td>@sunrockresidences</td><td class="num">204</td><td>нет</td><td>Taplink</td><td>Архитектура, лайфстайл, стройка, цена в посте</td></tr>
+        <tr><td>@boghosdevelopments</td><td class="num">143</td><td>5 на пост: #LimassolRealEstate, #InvestInCyprus…</td><td>Сайт</td><td>Доходность «до 8% ROI», предстартовые цены, телефон в описании профиля</td></tr>
+        <tr><td>@bbf.world</td><td class="num">491</td><td>25 в ленте, собственный #bbftv</td><td>Сайт с UTM-метками, faces.bbf.com, YouTube</td><td>Видеорубрика bbf.tv, вопросы к аудитории («А вы бы инвестировали?»), 150+ проектов</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Сравнение с конкурентами</h2>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Проект</th><th>Квартир</th><th>Формат</th><th>Цена от</th><th>Статус</th><th>Инфраструктура</th><th>Как собирают заявки</th></tr></thead>
+      <tbody>
+        <tr class="us"><td>Sunrock Residences<br><span class="muted">Blue Reef</span></td><td class="num">46</td><td>2–4 спальни, пентхаусы, 116–354 м²</td><td class="num">€529 000*</td><td>«Delivering Soon»</td><td>Бассейн 42 м, детский бассейн, спа, сауна, хаммам, спортзал, барбекю</td><td>WhatsApp, форма обратного звонка, 4 телефона</td></tr>
+        <tr><td>Eden Roc<br><span class="muted">Prime Property / bbf</span></td><td class="num">3 корпуса</td><td>2–4 спальни, пентхаусы с бассейном, таунхаусы</td><td class="num">€1,05–2,5 млн</td><td>Сдан</td><td>Консьерж, спа, открытый и крытый бассейн, спортзал, детский клуб</td><td>Форма с выбором канала (телефон, Telegram, WhatsApp, email), PDF-брошюра</td></tr>
+        <tr><td>Belgravia Residences<br><span class="muted">Zemco Group</span></td><td class="num">24</td><td>2–4 спальни, пентхаусы</td><td class="muted">не указана</td><td class="muted">нет данных</td><td>Мозаичный бассейн, сад, закрытая территория</td><td>Телефон и email</td></tr>
+        <tr><td>LEVELS Residences<br><span class="muted">Leto Group</span></td><td class="num">11</td><td>1–3 спальни, roof garden</td><td class="num">€280 000</td><td>Стройка, сдача 31.12.2027</td><td>Подогреваемый бассейн, спортзал, сауна, хаммам, «умный дом»</td><td>Форма, WhatsApp, Messenger; счётчик «6 продано, 5 в брони»</td></tr>
+        <tr><td>Heights Residence BD103<br><span class="muted">Boghos Developments</span></td><td class="num">9</td><td>1–2 спальни, пентхаусы с roof garden</td><td class="muted">не указана</td><td>В продаже</td><td>Барбекю-зона, зарядка для электромобилей, солнечные панели</td><td>WhatsApp, форма, PDF-брошюра</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted" style="margin-top:10px">* Цена Sunrock взята из поста в Instagram от 07.04.2026, на сайте её нет.</p>
+</section>
+
+<section>
+  <h2>Фишки конкурентов</h2>
+  <div class="comp">
+    <div class="panel">
+      <h3>Eden Roc</h3><span class="tag">bbf · сдан · 500 м до моря</span>
+      <ul class="plus"><li>Имя архитектора как аргумент: лондонская студия UHA.</li><li>По открытым источникам — награда European Property Awards 2024–2025.</li><li>Форма, где клиент сам выбирает канал связи, включая Telegram.</li><li>Брошюра в PDF.</li></ul>
+      <ul class="minus"><li>Цена от €1 млн — это другой сегмент, для покупателя Sunrock выигрыш в цене.</li><li>Старый аккаунт Prime Property заброшен с 2022 года, но всё ещё находится в поиске.</li></ul>
+    </div>
+    <div class="panel">
+      <h3>Heights BD103</h3><span class="tag">Boghos · 9 квартир</span>
+      <ul class="plus"><li>Продаёт доходностью: «до 8% ROI», «успейте по предстартовой цене».</li><li>15 тыс. подписчиков, хэштеги в каждом посте, телефон прямо в описании профиля.</li><li>Упор на школы рядом: Foley's за 5 минут.</li></ul>
+      <ul class="minus"><li>Нет бассейна и спа, всего 9 квартир — клубного формата нет.</li><li>Сайт только на английском.</li></ul>
+    </div>
+    <div class="panel">
+      <h3>LEVELS Residences</h3><span class="tag">Leto Group · 11 квартир</span>
+      <ul class="plus"><li>Цена «от» прямо на сайте.</li><li>Счётчик «6 продано, 5 в брони» создаёт дефицит.</li><li>Энергоэффективность класса A, солнечные панели, «умный дом».</li></ul>
+      <ul class="minus"><li>Маленькие площади: 25–102 м² внутри.</li><li>Сдача только в конце 2027 года.</li></ul>
+    </div>
+    <div class="panel">
+      <h3>Belgravia Residences</h3><span class="tag">Zemco · 24 квартиры</span>
+      <ul class="plus"><li>Узнаваемый «викторианский» стиль, потолки 3,15 м.</li><li>Проект описан на агентских порталах (DOM, Cyprus Alliance).</li></ul>
+      <ul class="minus"><li>У проекта почти нет своего сайта: страница Zemco без цен и планировок.</li><li>Нет Instagram проекта.</li></ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Кто покупатель: гипотезы по контенту рынка</h2>
+  <div class="two">
+    <div class="panel"><h3>Семьи с переездом</h3><p class="muted">Русскоязычные и международные семьи, которые переезжают в Лимассол. Для них важны школы, безопасная закрытая территория, детская инфраструктура. Sunrock уже пишет о школах Гермасойи, но на сайте этой темы нет.</p></div>
+    <div class="panel"><h3>Инвесторы под ВНЖ</h3><p class="muted">Покупатели от €300 000 ради ПМЖ Кипра. Им нужны цифры: цена за м², аренда, доходность, сроки сдачи. Конкуренты (Boghos) говорят с ними языком ROI, Sunrock — языком лайфстайла.</p></div>
+    <div class="panel"><h3>Второй дом у моря</h3><p class="muted">Европейцы и жители Ближнего Востока, которые ищут дом для сезона. Для них важны вид на море, сервис, возможность сдавать квартиру в своё отсутствие.</p></div>
+  </div>
+  <p class="muted" style="margin-top:12px">Это гипотезы по открытому контенту. Точный портрет строится по данным CRM и рекламных кабинетов — это следующий шаг аудита.</p>
+</section>
+
+<section>
+  <h2>Что сделать в первую очередь</h2>
+  <ol class="recs">
+    <li><b>Показать цену «от €529 000» на главной и на страницах квартир.</b>Добавить статус по каждой квартире: свободна, в брони, продана. Как у LEVELS, это одновременно отсекает нецелевые заявки и создаёт дефицит.</li>
+    <li><b>Обновить ход строительства и вести его ежемесячно.</b>Фото и видео со стройки уже выходят в Instagram — их стоит дублировать на сайт.</li>
+    <li><b>Назвать застройщика.</b>Добавить блок о Blue Reef с реализованными проектами, архитектором и командой.</li>
+    <li><b>Собрать один номер для заявок и PDF-брошюру.</b>Брошюру отдавать в обмен на контакт — это готовый лид-магнит для рекламы.</li>
+    <li><b>Починить LinkedIn и опечатку на кнопке.</b>Завести страницу компании вместо личного профиля.</li>
+    <li><b>Добавить в Instagram хэштеги и телефон в описание профиля.</b>Сменить закреп на актуальный англоязычный пост с ценой и ВНЖ, добавить хайлайт с отчётами о стройке.</li>
+    <li><b>Добавить язык доходности.</b>Отдельный пост и блок на сайте для инвесторов: цена за м² против рынка, ожидаемая аренда, путь к ПМЖ.</li>
+  </ol>
+</section>
+
+<section class="cta">
+  <h2>Разберём, откуда приходят ваши покупатели</h2>
+  <p>Это открытая часть аудита. На созвоне покажем, какие рекламные каналы используют конкуренты, как сегментировать аудиторию Sunrock и что изменить в воронке, чтобы заявки с сайта и Instagram стали дешевле.</p>
+  <a class="btn" href="https://mrlnstudio.com/digital_audit">Обсудить аудит с MRLN Studio</a>
+</section>
+
+<footer>
+  <p><b>Как собраны данные.</b> Публичные страницы сайтов и профилей Instagram собраны 23.09.2026 с помощью ScrapeGraphAI и открытого веб-поиска. Цифры по подписчикам и постам — на эту дату. Рекламная активность (Meta Ad Library) в эту версию не вошла, её проверяем на созвоне.</p>
+  <p>Источники: sunrockresidences.com, instagram.com/sunrockresidences, bbf.com/projects/eden-roc, prime-property.com, zemcogroup.com, letogroupcyprus.com, boghosdevelopments.com, instagram.com/boghosdevelopments, instagram.com/bbf.world, instagram.com/primeproperty_group, dom.com.cy.</p>
+</footer>
+
+</div>
